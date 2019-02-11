@@ -28,11 +28,11 @@ namespace PriorityQueue
 
         private TItem DequeueFromHighPriorityQueue()
         {
-            var first = _subQueues.First();
-            var nextItem = first.Value.Dequeue();
+            var subQueue = _subQueues.First();
+            var nextItem = subQueue.Value.Dequeue();
 
-            if (!first.Value.Any())
-                _subQueues.Remove(first.Key);
+            if (!subQueue.Value.Any())
+                _subQueues.Remove(subQueue.Key);
 
             return nextItem;
         }
