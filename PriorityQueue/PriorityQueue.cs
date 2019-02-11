@@ -6,15 +6,15 @@ namespace PriorityQueue
 {
     public sealed class PriorityQueue<TPriority, TItem>
     {
-        readonly SortedDictionary<TPriority, Queue<TItem>> _subqueues;
+        readonly SortedDictionary<TPriority, Queue<TItem>> _subQueues;
 
-        public int Count => _subqueues.Sum(q => q.Value.Count);
-        
-        public bool HasItems => _subqueues.Any();
-        
+        public int Count => _subQueues.Sum(q => q.Value.Count);
+
+        public bool HasItems => _subQueues.Any();
+
         public PriorityQueue(IComparer<TPriority> priorityComparer)
         {
-            _subqueues = new SortedDictionary<TPriority, Queue<TItem>>(priorityComparer);
+            _subQueues = new SortedDictionary<TPriority, Queue<TItem>>(priorityComparer);
         }
 
         public PriorityQueue() : this(Comparer<TPriority>.Default)
@@ -23,23 +23,23 @@ namespace PriorityQueue
 
         private void AddQueueOfPriority(TPriority priority)
         {
-            _subqueues.Add(priority, new Queue<TItem>());
+            _subQueues.Add(priority, new Queue<TItem>());
         }
 
         private TItem DequeueFromHighPriorityQueue()
         {
-            var first = _subqueues.First();
+            var first = _subQueues.First();
             var nextItem = first.Value.Dequeue();
 
             if (!first.Value.Any())
-                _subqueues.Remove(first.Key);
+                _subQueues.Remove(first.Key);
 
             return nextItem;
         }
 
         public TItem Dequeue()
         {
-            if (_subqueues.Any())
+            if (_subQueues.Any())
                 return DequeueFromHighPriorityQueue();
 
             throw new InvalidOperationException("The queue is empty");
@@ -47,16 +47,16 @@ namespace PriorityQueue
 
         public void Enqueue(TPriority priority, TItem item)
         {
-            if (!_subqueues.ContainsKey(priority))
+            if (!_subQueues.ContainsKey(priority))
                 AddQueueOfPriority(priority);
 
-            _subqueues[priority].Enqueue(item);
+            _subQueues[priority].Enqueue(item);
         }
 
         public TItem Peek()
         {
             if (HasItems)
-                return _subqueues.First().Value.Peek();
+                return _subQueues.First().Value.Peek();
 
             throw new InvalidOperationException("The queue is empty");
         }
